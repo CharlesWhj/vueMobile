@@ -17,8 +17,7 @@
           err_msg="手机号输入不合法，请输入11位手机号"
         ></myinput>
         <br />
-        <myinput placeholder="请输入密码" type="password" :value="uers.password"
-        v-model="uers.password"></myinput>
+        <myinput placeholder="请输入密码" type="password" v-model="uers.password" :rules="/^\w+$/" err_msg="密码不符合要求"></myinput>
         <mybutton @click="handleLogin" text="登录"></mybutton>
       </div>
       <p class="tips">
@@ -33,9 +32,6 @@
 import mybutton from '@/components/loginbtn.vue'
 import myinput from '@/components/loginInput.vue'
 import { userlogin } from '@/api/users'
-// import Vue from 'vue'
-// import vueResource from 'vue-resource'
-// Vue.use(vueResource)
 export default {
   data () {
     return {
@@ -47,24 +43,24 @@ export default {
   },
   methods: {
     handleLogin () {
-      console.log(this.uers)
+      // console.log(this.uers)
       userlogin(this.uers)
         .then(res => {
-          console.log(res)
+          // console.log(res)
+          // this.$router.push({ path: '/login' })
+          if (res.data.message === '登录成功') {
+            this.$router.push({ path: `/personal/${res.data.data.user.id}` })
+            // console.log(`${res.data.data.user.id}`)
+            localStorage.setItem('hotnews_token', res.data.data.token)
+            // console.log(res)
+          } else {
+            this.$toast.fail('登录失败，请检查账号密码，重新登录')
+          }
         })
         .catch(err => {
           console.log(err)
+          this.$toast.fail('请重新登录')
         })
-      // Vue.http.post(
-      //   'http://localhost:3000/login',
-      //   this.uers, {
-      //   //   'headers': {
-      //   //     'Content-Type': 'x-www-form-urlencoded'
-      //   //   }
-      //   }
-      // ).then(function (res) {
-      //   console.log(res)
-      // })
     },
     handleNumber (data) {
       this.uers.username = data
