@@ -12,7 +12,8 @@ export const userlogin = (data) => {
 export const Personal = (id) => {
   return axios({
     method: 'get',
-    url: `/user/${id}`,
-    headers: ({ Authorization: localStorage.getItem('hotnews_token') })
+    url: `/user/${id}`
+    // 在拦截器里面实现token值的判断
+    // headers: ({ Authorization: localStorage.getItem('hotnews_token') })
   })
 }
