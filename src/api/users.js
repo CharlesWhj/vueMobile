@@ -17,3 +17,21 @@ export const Personal = (id) => {
     // headers: ({ Authorization: localStorage.getItem('hotnews_token') })
   })
 }
+
+// 编辑用户信息
+export const edit = (id, data) => {
+  return axios({
+    method: 'post',
+    url: `/user_update/${id}`,
+    data
+  })
+}
+
+// 用户注册
+export const userRegister = (data) => {
+  return axios({
+    method: 'post',
+    url: '/register',
+    data
+  })
+}

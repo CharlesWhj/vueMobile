@@ -1,6 +1,8 @@
 // 封装基准路径
 import axios from 'axios'
 axios.defaults.baseURL = 'http://localhost:3000'
+// 储存基本路径
+localStorage.setItem('hotnews_url', axios.defaults.baseURL)
 // 添加请求拦截器
 // config:相当于当前的请求报文
 axios.interceptors.request.use(function (config) {

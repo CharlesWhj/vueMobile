@@ -17,12 +17,20 @@
           err_msg="手机号输入不合法，请输入11位手机号"
         ></myinput>
         <br />
+        <myinput
+        placeholder="请输入用户名"
+          type="text"
+          v-model="uers.nickname"
+          :rules='/\w{1,6}/'
+          err_msg="用户名不符合要求"
+        ></myinput>
+        <br>
         <myinput placeholder="请输入密码" type="password" v-model="uers.password" :rules="/^\w+$/" err_msg="密码不符合要求"></myinput>
-        <mybutton @click="handleLogin" text="登录"></mybutton>
+        <mybutton @click="handleRegister" text="注册" class="tgreen"></mybutton>
       </div>
       <p class="tips">
-        没有账号？
-        <a href="#/register">去注册</a>
+        有账号？
+        <a href="#/login" class>去登录</a>
       </p>
     </div>
   </div>
@@ -31,38 +39,32 @@
 <script>
 import mybutton from '@/components/loginbtn.vue'
 import myinput from '@/components/loginInput.vue'
-import { userlogin } from '@/api/users'
+// 引入注册api
+import { userRegister } from '@/api/users'
+
 export default {
   data () {
     return {
       uers: {
-        username: '10086',
-        password: '123'
+        username: '',
+        password: '',
+        nickname: ''
       }
     }
   },
   methods: {
-    handleLogin () {
+    //   注册用户
+    async handleRegister () {
       // console.log(this.uers)
-      userlogin(this.uers)
-        .then(res => {
-          // console.log(res)
-          // this.$router.push({ path: '/login' })
-          if (res.data.message === '登录成功') {
-            localStorage.setItem('hotnews_token', res.data.data.token)
-            // 把id储存到本地内存
-            localStorage.setItem('userID', res.data.data.user.id)
-            this.$router.push({ path: `/personal/${res.data.data.user.id}` })
-            // console.log(`${res.data.data.user.id}`)
-            // console.log(res)
-          } else {
-            this.$toast.fail('登录失败，请检查账号密码，重新登录')
-          }
-        })
-        .catch(err => {
-          console.log(err)
-          this.$toast.fail('请重新登录')
-        })
+
+      let res = await userRegister(this.uers)
+      if (res.data.message === '注册成功') {
+        this.$toast('恭喜你，注册成功')
+        this.$router.push({ path: 'login' })
+      } else {
+        this.$toast.fail('注册失败,用户名被占用')
+      }
+    //   console.log(res)
     },
     handleNumber (data) {
       this.uers.username = data
@@ -112,5 +114,8 @@ export default {
   a {
     color: #3385ff;
   }
+}
+.tgreen{
+    background-color: green
 }
 </style>

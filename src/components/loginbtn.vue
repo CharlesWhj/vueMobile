@@ -26,4 +26,7 @@ export default {
    border-radius: 20*100vw/360;
    color: #fff
 }
+.green{
+  background-color: green
+}
 </style>
