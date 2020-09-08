@@ -1,2 +1,2 @@
-# hm-hotnews
+# hotnews
 头条新闻
